@@ -1,0 +1,120 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import { getYouTubeEmbedUrl } from '@/utils/youtube';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('work');
+  return entries.map((entry) => ({
+    params: { id: entry.id },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'work'>;
+}
+
+const { entry } = Astro.props;
+const { title, category, year, cover, youtubeUrl, description, images, tools } = entry.data;
+const { Content } = await render(entry);
+
+const embedUrl = youtubeUrl ? getYouTubeEmbedUrl(youtubeUrl) : null;
+
+const related = (await getCollection('work'))
+  .filter((e) => e.id !== entry.id && e.data.category === category)
+  .slice(0, 3);
+---
+
+<BaseLayout title={title} description={description} image={cover}>
+  <article class="mx-auto max-w-6xl px-6 pt-16 pb-8 sm:pt-24">
+    <a href="/work" class="text-ink-soft hover:text-signal text-sm transition-colors">
+      ← All work
+    </a>
+
+    <h1
+      class="font-display mt-8 max-w-4xl text-4xl leading-[1.05] font-bold tracking-tight sm:text-6xl"
+    >
+      {title}
+    </h1>
+
+    <p class="text-ink-soft mt-4 font-mono text-xs tracking-[0.2em] uppercase">
+      {category} · {year}
+    </p>
+
+    {/* Hero media: YouTube embed when available, otherwise the cover */}
+    <div class="mt-10 overflow-hidden rounded-2xl">
+      {
+        embedUrl ? (
+          <div class="aspect-video w-full">
+            <iframe
+              src={embedUrl}
+              title={title}
+              class="h-full w-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              loading="lazy"
+            />
+          </div>
+        ) : (
+          <img src={cover} alt={title} class="aspect-video w-full object-cover" />
+        )
+      }
+    </div>
+
+    <div class="mt-10 max-w-2xl">
+      <p class="text-lg leading-relaxed text-ink sm:text-xl">{description}</p>
+      <div class="prose prose-sm sm:prose-base mt-6">
+        <Content />
+      </div>
+    </div>
+
+    {/* Gallery */}
+    {
+      images.length > 0 && (
+        <div class="mt-12 grid gap-6 sm:grid-cols-2">
+          {images.map((src) => (
+            <div class="overflow-hidden rounded-2xl">
+              <img src={src} alt={title} loading="lazy" class="aspect-video w-full object-cover" />
+            </div>
+          ))}
+        </div>
+      )
+    }
+
+    {/* Tools */}
+    {
+      tools.length > 0 && (
+        <div class="mt-12">
+          <p class="text-ink-soft mb-4 font-mono text-xs tracking-[0.2em] uppercase">
+            Tools
+          </p>
+          <ul class="flex flex-wrap gap-2">
+            {tools.map((tool) => (
+              <li class="border-line text-ink-soft rounded-full border px-4 py-1.5 text-sm">
+                {tool}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+  </article>
+
+  {/* Related projects */}
+  {
+    related.length > 0 && (
+      <section class="mx-auto max-w-6xl px-6 py-16 sm:py-24" aria-label="Related projects">
+        <h2 class="font-display mb-10 text-2xl font-medium tracking-tight sm:text-4xl">
+          Related
+        </h2>
+        <div class="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+          {related.map((e) => (
+            <ProjectCard entry={e} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>

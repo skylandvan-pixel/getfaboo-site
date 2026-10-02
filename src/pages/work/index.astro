@@ -1,0 +1,96 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import { CATEGORIES } from '@/site.config';
+
+const allWork = (await getCollection('work')).sort(
+  (a, b) => b.data.year - a.data.year || a.data.title.localeCompare(b.data.title),
+);
+
+const filters = ['ALL', ...CATEGORIES] as const;
+---
+
+<BaseLayout title="Work" description="All GetFaboo projects — AI video, social media, and AI products.">
+  <section class="mx-auto max-w-6xl px-6 pt-16 pb-24 sm:pt-24" aria-label="All work">
+    <h1 class="reveal font-display text-4xl font-medium tracking-tight sm:text-6xl">
+      Work
+    </h1>
+
+    {/* Filter buttons — tiny client script below, no framework needed */}
+    <div class="reveal mt-10 flex flex-wrap gap-2" role="group" aria-label="Filter by category">
+      {
+        filters.map((f) => (
+          <button
+            type="button"
+            data-filter={f}
+            class="filter-btn border-line rounded-full border px-5 py-2 text-xs font-medium tracking-[0.15em] uppercase transition-colors"
+            aria-pressed="false"
+          >
+            {f}
+          </button>
+        ))
+      }
+    </div>
+
+    <div id="work-grid" class="mt-12 grid gap-x-8 gap-y-14 sm:grid-cols-2">
+      {allWork.map((entry) => <ProjectCard entry={entry} />)}
+    </div>
+
+    <p id="work-empty" class="text-ink-soft hidden py-16 text-center">
+      No projects in this category yet.
+    </p>
+  </section>
+
+  <script is:inline>
+    (function () {
+      var buttons = Array.prototype.slice.call(document.querySelectorAll('.filter-btn'));
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.work-card'));
+      var empty = document.getElementById('work-empty');
+      var ACTIVE = ['bg-signal', 'border-signal', 'text-white'];
+      var IDLE = ['text-ink-soft'];
+
+      function apply(filter) {
+        var shown = 0;
+        cards.forEach(function (card) {
+          var show = filter === 'ALL' || card.getAttribute('data-category') === filter;
+          card.classList.toggle('hidden', !show);
+          if (show) shown++;
+        });
+        if (empty) empty.classList.toggle('hidden', shown > 0);
+        buttons.forEach(function (btn) {
+          var on = btn.getAttribute('data-filter') === filter;
+          btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+          ACTIVE.forEach(function (c) { btn.classList.toggle(c, on); });
+          IDLE.forEach(function (c) { btn.classList.toggle(c, !on); });
+        });
+      }
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          apply(btn.getAttribute('data-filter'));
+        });
+      });
+
+      // Deep-linkable: /work?filter=AI%20VIDEO
+      var initial = 'ALL';
+      try {
+        var q = new URLSearchParams(window.location.search).get('filter');
+        if (q) {
+          var match = buttons.find(function (b) {
+            return b.getAttribute('data-filter') === q.toUpperCase();
+          });
+          if (match) initial = match.getAttribute('data-filter');
+        }
+      } catch (e) {}
+      apply(initial);
+    })();
+  </script>
+
+  <style>
+    .filter-btn:not(.bg-signal):hover {
+      border-color: var(--color-signal);
+      color: var(--color-ink);
+    }
+  </style>
+</BaseLayout>

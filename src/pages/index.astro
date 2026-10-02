@@ -1,0 +1,124 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import { SITE } from '@/site.config';
+
+const allWork = await getCollection('work');
+const selected = [...allWork]
+  .sort((a, b) => b.data.year - a.data.year || a.data.title.localeCompare(b.data.title))
+  .slice(0, 4);
+
+const explore = [
+  {
+    label: 'AI VIDEO',
+    blurb: 'AI films, cinematic experiments, character work.',
+    href: '/work?filter=AI%20VIDEO',
+  },
+  {
+    label: 'SOCIAL MEDIA',
+    blurb: 'YouTube series, short video, brand content.',
+    href: '/work?filter=SOCIAL%20MEDIA',
+  },
+  {
+    label: 'AI LAB',
+    blurb: 'AI products and experiments from the lab.',
+    href: '/ai-lab',
+  },
+];
+---
+
+<BaseLayout title={SITE.name} description={SITE.description}>
+  {/* 01 — Hero */}
+  <section
+    class="grain relative flex min-h-[92svh] items-center overflow-hidden"
+    aria-label="Introduction"
+  >
+    {/* backdrop: layered radial gradients, no video yet */}
+    <div
+      class="absolute inset-0"
+      aria-hidden="true"
+      style="background:
+        radial-gradient(60% 50% at 75% 20%, rgba(43,107,255,0.16), transparent 70%),
+        radial-gradient(45% 40% at 15% 80%, rgba(43,107,255,0.08), transparent 70%),
+        #0a0a0a;"
+    ></div>
+
+    <div class="relative mx-auto w-full max-w-6xl px-6 py-24">
+      <p
+        class="reveal font-display text-xs font-medium tracking-[0.3em] text-ink-soft uppercase"
+      >
+        AI Creative Studio
+      </p>
+      <h1
+        class="reveal font-display mt-6 text-[clamp(3.5rem,12vw,9rem)] leading-[0.95] font-bold tracking-tight"
+      >
+        GetFaboo
+      </h1>
+      <p class="reveal font-display mt-6 max-w-2xl text-2xl font-medium sm:text-4xl">
+        {SITE.tagline}
+      </p>
+      <p class="reveal text-ink-soft mt-4 font-mono text-xs tracking-[0.25em] uppercase sm:text-sm">
+        {SITE.subline}
+      </p>
+      <div class="reveal mt-10">
+        <a
+          href="/work"
+          class="bg-signal inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-semibold text-white transition-transform duration-300 hover:scale-[1.03]"
+        >
+          View Work →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* 02 — Selected Work */}
+  <section class="mx-auto max-w-6xl px-6 py-24 sm:py-36" aria-label="Selected work">
+    <div class="reveal mb-12 flex items-end justify-between gap-6">
+      <h2 class="font-display text-3xl font-medium tracking-tight sm:text-5xl">
+        Selected Work
+      </h2>
+      <a
+        href="/work"
+        class="text-ink-soft hover:text-signal shrink-0 text-sm transition-colors"
+      >
+        All work →
+      </a>
+    </div>
+    <div class="grid gap-x-8 gap-y-14 sm:grid-cols-2">
+      {selected.map((entry) => <ProjectCard entry={entry} />)}
+    </div>
+  </section>
+
+  {/* 03 — Explore */}
+  <section class="border-line border-t" aria-label="Explore categories">
+    <div class="mx-auto max-w-6xl px-6 py-24 sm:py-32">
+      <h2 class="reveal font-display mb-4 text-3xl font-medium tracking-tight sm:text-5xl">
+        Explore
+      </h2>
+      <div>
+        {
+          explore.map((item) => (
+            <a
+              href={item.href}
+              class="reveal group border-line flex items-baseline justify-between gap-6 border-b py-8 transition-colors first:border-t sm:py-10"
+            >
+              <div>
+                <p class="font-display text-2xl font-medium tracking-tight transition-colors group-hover:text-signal sm:text-4xl">
+                  {item.label}
+                </p>
+                <p class="text-ink-soft mt-2 text-sm">{item.blurb}</p>
+              </div>
+              <span
+                class="text-ink-soft group-hover:text-signal shrink-0 text-2xl transition-all duration-300 group-hover:translate-x-1 sm:text-3xl"
+                aria-hidden="true"
+              >
+                →
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
