@@ -17,9 +17,13 @@ export const SITE = {
     'AI',
   ],
   social: [
-    { label: 'YouTube', href: 'https://www.youtube.com/@skylandvan' },
-    { label: 'Instagram', href: '#' },
-    { label: 'Xiaohongshu', href: '#' },
+    { label: 'YouTube', href: 'https://www.youtube.com/@skylandvan', icon: 'youtube' },
+    { label: 'Instagram', href: '#', icon: 'instagram' },
+    { label: 'Xiaohongshu', href: '#', icon: 'xiaohongshu' },
+    // No direct WeChat link yet — points to /contact for now.
+    // To open a WeChat QR-code popup later: keep this entry and attach a
+    // click handler to [data-social="wechat"] that opens the modal instead.
+    { label: 'WeChat', href: '/contact', icon: 'wechat' },
   ],
   locale: 'en',
 } as const;

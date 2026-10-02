@@ -2,10 +2,11 @@
 title: "Untitled AI Film"
 category: "AI VIDEO"
 year: 2026
-cover: "/covers/placeholder.svg"
-description: "Coming soon — a cinematic AI experiment from the GetFaboo studio. This is a placeholder entry."
+cover: "https://i.ytimg.com/vi/9QziSdfxFz0/maxresdefault.jpg"
+youtubeUrl: "https://youtube.com/shorts/9QziSdfxFz0?si=bUdETRwvrsgFYTNK"
+description: "An AI-generated short film experiment from the GetFaboo studio, released as a YouTube Short."
+tools: ["AI Video", "YouTube Shorts"]
 ---
 
-This slot is reserved for the first GetFaboo AI film. Replace this file with
-the real project once the video is ready: add the YouTube URL, a cover image,
-and a short description.
+A vertical AI film experiment — built with generative video tools and cut for
+the Shorts format. The first moving-image test from the GetFaboo studio.
