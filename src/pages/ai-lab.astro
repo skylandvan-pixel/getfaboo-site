@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+
+const labProjects = (await getCollection('work'))
+  .filter((e) => e.data.category === 'AI PRODUCTS')
+  .sort((a, b) => b.data.year - a.data.year || a.data.title.localeCompare(b.data.title));
+---
+
+<BaseLayout
+  title="AI Lab"
+  description="AI products and experiments from the GetFaboo lab."
+>
+  <section class="mx-auto max-w-6xl px-6 pt-16 pb-24 sm:pt-24" aria-label="AI Lab">
+    <p class="reveal font-display text-xs font-medium tracking-[0.3em] text-signal uppercase">
+      Experimental
+    </p>
+    <h1 class="reveal font-display mt-6 text-4xl font-medium tracking-tight sm:text-6xl">
+      AI Lab
+    </h1>
+    <p class="reveal text-ink-soft mt-6 max-w-xl text-lg">
+      Products and experiments from the GetFaboo lab — AI apps, tools, and
+      works in progress.
+    </p>
+
+    <div class="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2">
+      {labProjects.map((entry) => <ProjectCard entry={entry} />)}
+    </div>
+
+    {
+      labProjects.length === 0 && (
+        <p class="text-ink-soft py-16 text-center">
+          Nothing here yet — the lab is warming up.
+        </p>
+      )
+    }
+  </section>
+</BaseLayout>

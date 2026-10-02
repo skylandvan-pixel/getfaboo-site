@@ -1,0 +1,44 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/site.config';
+---
+
+<BaseLayout title="About" description={`About ${SITE.name} — from design and architecture to visual storytelling and AI.`}>
+  <section class="mx-auto max-w-6xl px-6 pt-16 pb-24 sm:pt-24" aria-label="About">
+    <p class="reveal font-display text-xs font-medium tracking-[0.3em] text-ink-soft uppercase">
+      About
+    </p>
+    <h1
+      class="reveal font-display mt-6 max-w-4xl text-4xl leading-[1.05] font-medium tracking-tight sm:text-6xl"
+    >
+      From design and architecture to visual storytelling and AI.
+    </h1>
+    <p class="reveal text-ink-soft mt-8 max-w-2xl text-lg leading-relaxed">
+      {SITE.aboutShort}
+    </p>
+
+    <div class="reveal mt-14">
+      <p class="text-ink-soft mb-5 font-mono text-xs tracking-[0.2em] uppercase">
+        Background
+      </p>
+      <ul class="border-line border-t">
+        {
+          SITE.background.map((item) => (
+            <li class="border-line font-display flex items-center justify-between border-b py-4 text-xl font-medium sm:text-2xl">
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="reveal mt-14">
+      <a
+        href={`mailto:${SITE.email}`}
+        class="bg-signal inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-semibold text-white transition-transform duration-300 hover:scale-[1.03]"
+      >
+        Get in touch →
+      </a>
+    </div>
+  </section>
+</BaseLayout>

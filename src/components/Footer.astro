@@ -1,0 +1,43 @@
+---
+import { SITE } from '@/site.config';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-line border-t">
+  {/* Contact CTA */}
+  <div class="mx-auto max-w-6xl px-6 py-24 sm:py-32">
+    <p class="reveal font-display text-4xl font-medium tracking-tight sm:text-6xl">
+      Let&rsquo;s create something.
+    </p>
+    <div class="reveal mt-8 flex flex-wrap items-center gap-x-8 gap-y-3">
+      <a
+        href={`mailto:${SITE.email}`}
+        class="text-signal font-medium hover:underline"
+      >
+        {SITE.email}
+      </a>
+      {
+        SITE.social.map((link) => (
+          <a
+            href={link.href}
+            class="text-ink-soft hover:text-ink text-sm transition-colors"
+            rel="me"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  {/* Bottom bar */}
+  <div class="border-line border-t">
+    <div
+      class="text-ink-soft mx-auto flex max-w-6xl flex-col gap-3 px-6 py-6 font-mono text-xs sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>© {year} {SITE.name}</p>
+      <a href="#top" class="hover:text-ink transition-colors">Back to top ↑</a>
+    </div>
+  </div>
+</footer>

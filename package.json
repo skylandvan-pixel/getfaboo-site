@@ -1,0 +1,45 @@
+{
+  "name": "getfaboo",
+  "type": "module",
+  "version": "1.0.0",
+  "private": false,
+  "description": "GetFaboo — AI creative studio and social media portfolio (Astro).",
+  "keywords": [
+    "astro",
+    "astro-theme",
+    "astro-template",
+    "portfolio",
+    "tailwindcss",
+    "typescript",
+    "starter"
+  ],
+  "license": "MIT",
+  "author": "Bracozs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/getfaboo"
+  },
+  "homepage": "https://github.com/your-username/getfaboo",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@tailwindcss/typography": "^0.5.20",
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
+  }
+}
